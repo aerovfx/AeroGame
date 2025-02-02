@@ -1,70 +1,13 @@
+# Hệ Thống Vật Lý và Animation
 
-## Điều Khiển Nhân Vật Trong Unreal Engine Bằng C++
+## 4.1. Vật lý cơ bản (Rigid Body, Collision, Physics Material)
+Trong phần này, chúng ta sẽ tìm hiểu về các khái niệm cơ bản của hệ thống vật lý như Rigid Body, Collision và Physics Material. Rigid Body là đối tượng vật lý không biến dạng khi chịu lực tác động. Collision giúp phát hiện và xử lý va chạm giữa các đối tượng. Physics Material xác định các thuộc tính vật lý như ma sát và độ đàn hồi của bề mặt.
 
-Trong phần này, chúng ta sẽ học cách điều khiển nhân vật trong Unreal Engine bằng C++.
+## 4.2. Sử dụng PhysX và Chaos Physics
+Chúng ta sẽ khám phá cách sử dụng hai hệ thống vật lý phổ biến là PhysX và Chaos Physics. PhysX là một engine vật lý mạnh mẽ được sử dụng rộng rãi trong các trò chơi và ứng dụng mô phỏng. Chaos Physics là hệ thống vật lý mới hơn, cung cấp các tính năng tiên tiến và hiệu suất cao hơn.
 
-## Bước 1: Tạo Dự Án Mới
-Mở Unreal Engine và tạo một dự án mới với template "Third Person". Đặt tên dự án và chọn vị trí lưu trữ phù hợp.
+## 4.3. Skeletal Meshes và Animation Blueprints
+Phần này sẽ giới thiệu về Skeletal Meshes và cách sử dụng Animation Blueprints để tạo và quản lý các hoạt ảnh cho nhân vật. Skeletal Meshes là các mô hình 3D có cấu trúc xương, cho phép tạo ra các chuyển động phức tạp. Animation Blueprints là công cụ mạnh mẽ để thiết kế và điều khiển các hoạt ảnh.
 
-## Bước 2: Tạo Lớp Nhân Vật
-Tạo một lớp C++ mới kế thừa từ `ACharacter`. Đặt tên lớp là `MyCharacter`.
-
-```cpp
-#include "GameFramework/Character.h"
-#include "MyCharacter.generated.h"
-
-UCLASS()
-class AMyCharacter : public ACharacter {
-    GENERATED_BODY()
-
-public:
-    AMyCharacter();
-
-protected:
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    void MoveForward(float Value);
-    void MoveRight(float Value);
-};
-```
-
-## Bước 3: Định Nghĩa Hàm Di Chuyển
-Trong file `.cpp`, định nghĩa các hàm di chuyển để xử lý đầu vào từ người chơi.
-
-```cpp
-#include "MyCharacter.h"
-
-AMyCharacter::AMyCharacter() {
-    PrimaryActorTick.bCanEverTick = true;
-}
-
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
-    Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-    PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
-    PlayerInputComponent->BindAxis("MoveRight", this, &AMyCharacter::MoveRight);
-}
-
-void AMyCharacter::MoveForward(float Value) {
-    if (Value != 0.0f) {
-        AddMovementInput(GetActorForwardVector(), Value);
-    }
-}
-
-void AMyCharacter::MoveRight(float Value) {
-    if (Value != 0.0f) {
-        AddMovementInput(GetActorRightVector(), Value);
-    }
-}
-```
-
-## Bước 4: Cấu Hình Input
-Mở `Project Settings` và cấu hình các trục điều khiển cho "MoveForward" và "MoveRight". Điều này bao gồm việc gán các phím hoặc trục điều khiển từ bàn phím hoặc gamepad.
-
-1. Đi tới `Edit` > `Project Settings`.
-2. Trong mục `Engine` > `Input`, thêm các trục mới:
-    - `MoveForward` với `W` và `S` cho giá trị 1 và -1 tương ứng.
-    - `MoveRight` với `A` và `D` cho giá trị -1 và 1 tương ứng.
-
-## Kết Luận
-Bạn đã học cách tạo và điều khiển nhân vật trong Unreal Engine bằng C++. Bạn có thể mở rộng thêm các tính năng như va chạm, hoạt ảnh, và nhiều hơn nữa để làm cho trò chơi của bạn thú vị hơn. Hãy thử nghiệm và sáng tạo để tạo ra những trải nghiệm độc đáo cho người chơi.
+## 4.4. Tích hợp C++ với Animation (AnimNotify, AnimInstance)
+Cuối cùng, chúng ta sẽ tìm hiểu cách tích hợp C++ với hệ thống animation thông qua các lớp AnimNotify và AnimInstance. AnimNotify cho phép chèn các sự kiện vào chuỗi hoạt ảnh, trong khi AnimInstance cung cấp các phương thức để điều khiển và quản lý hoạt ảnh từ mã C++.

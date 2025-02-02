@@ -1,36 +1,70 @@
-# Hướng dẫn cài đặt Unreal Engine và Visual Studio
 
-## 1. Cài đặt Unreal Engine
+## Điều Khiển Nhân Vật Trong Unreal Engine Bằng C++
 
-### Bước 1: Tải và cài đặt Epic Games Launcher
-- Truy cập trang web [Epic Games](https://www.epicgames.com/store/en-US/download) và tải Epic Games Launcher.
-- Mở file cài đặt và làm theo hướng dẫn để cài đặt Epic Games Launcher.
+Trong phần này, chúng ta sẽ học cách điều khiển nhân vật trong Unreal Engine bằng C++.
 
-### Bước 2: Đăng nhập vào Epic Games Launcher
-- Mở Epic Games Launcher và đăng nhập bằng tài khoản Epic Games của bạn. Nếu chưa có tài khoản, bạn có thể đăng ký mới.
+## Bước 1: Tạo Dự Án Mới
+Mở Unreal Engine và tạo một dự án mới với template "Third Person". Đặt tên dự án và chọn vị trí lưu trữ phù hợp.
 
-### Bước 3: Cài đặt Unreal Engine
-- Trong Epic Games Launcher, chọn tab "Unreal Engine".
-- Nhấn vào nút "Install Engine" và chọn phiên bản Unreal Engine bạn muốn cài đặt.
-- Chọn thư mục cài đặt và nhấn "Install".
+## Bước 2: Tạo Lớp Nhân Vật
+Tạo một lớp C++ mới kế thừa từ `ACharacter`. Đặt tên lớp là `MyCharacter`.
 
-## 2. Cài đặt Visual Studio
+```cpp
+#include "GameFramework/Character.h"
+#include "MyCharacter.generated.h"
 
-### Bước 1: Tải Visual Studio
-- Truy cập trang web [Visual Studio](https://visualstudio.microsoft.com/) và tải Visual Studio Community (phiên bản miễn phí).
+UCLASS()
+class AMyCharacter : public ACharacter {
+    GENERATED_BODY()
 
-### Bước 2: Cài đặt Visual Studio
-- Mở file cài đặt và làm theo hướng dẫn để cài đặt Visual Studio.
-- Trong quá trình cài đặt, chọn "Game development with C++" để cài đặt các công cụ cần thiết cho phát triển game với Unreal Engine.
+public:
+    AMyCharacter();
 
-### Bước 3: Cấu hình Visual Studio cho Unreal Engine
-- Mở Visual Studio và vào menu "Tools" > "Options".
-- Trong cửa sổ Options, chọn "Environment" > "Preview Features" và đảm bảo rằng "Enable Experimental C++20 Standard Library Modules" được bật.
-- Nhấn "OK" để lưu cấu hình.
+protected:
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-## 3. Kết nối Unreal Engine với Visual Studio
-- Mở Unreal Engine và tạo hoặc mở một dự án.
-- Vào menu "Edit" > "Editor Preferences".
-- Trong mục "Source Code", chọn "Visual Studio" làm IDE mặc định.
+    void MoveForward(float Value);
+    void MoveRight(float Value);
+};
+```
 
-Bây giờ bạn đã sẵn sàng để bắt đầu phát triển game với Unreal Engine và Visual Studio!
+## Bước 3: Định Nghĩa Hàm Di Chuyển
+Trong file `.cpp`, định nghĩa các hàm di chuyển để xử lý đầu vào từ người chơi.
+
+```cpp
+#include "MyCharacter.h"
+
+AMyCharacter::AMyCharacter() {
+    PrimaryActorTick.bCanEverTick = true;
+}
+
+void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", this, &AMyCharacter::MoveRight);
+}
+
+void AMyCharacter::MoveForward(float Value) {
+    if (Value != 0.0f) {
+        AddMovementInput(GetActorForwardVector(), Value);
+    }
+}
+
+void AMyCharacter::MoveRight(float Value) {
+    if (Value != 0.0f) {
+        AddMovementInput(GetActorRightVector(), Value);
+    }
+}
+```
+
+## Bước 4: Cấu Hình Input
+Mở `Project Settings` và cấu hình các trục điều khiển cho "MoveForward" và "MoveRight". Điều này bao gồm việc gán các phím hoặc trục điều khiển từ bàn phím hoặc gamepad.
+
+1. Đi tới `Edit` > `Project Settings`.
+2. Trong mục `Engine` > `Input`, thêm các trục mới:
+    - `MoveForward` với `W` và `S` cho giá trị 1 và -1 tương ứng.
+    - `MoveRight` với `A` và `D` cho giá trị -1 và 1 tương ứng.
+
+## Kết Luận
+Bạn đã học cách tạo và điều khiển nhân vật trong Unreal Engine bằng C++. Bạn có thể mở rộng thêm các tính năng như va chạm, hoạt ảnh, và nhiều hơn nữa để làm cho trò chơi của bạn thú vị hơn. Hãy thử nghiệm và sáng tạo để tạo ra những trải nghiệm độc đáo cho người chơi.

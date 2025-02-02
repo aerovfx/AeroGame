@@ -1,61 +1,36 @@
-# Thành phần Stamina trong Unreal Engine
+# Quá Trình Test và Tăng Cường Hiệu Suất Trên Các Nền Tảng Khác Nhau Khi Phát Triển Game
 
-## Tổng quan
-Thành phần Stamina trong Unreal Engine là một thành phần tùy chỉnh quản lý sức bền của nhân vật. Nó thường được sử dụng trong các trò chơi để kiểm soát các hành động như chạy nhanh, nhảy và các hoạt động khác tiêu tốn sức bền.
+## 1. Giới Thiệu
+Trong quá trình phát triển game, việc test và tối ưu hóa hiệu suất trên các nền tảng khác nhau là một bước quan trọng để đảm bảo game hoạt động mượt mà và mang lại trải nghiệm tốt nhất cho người chơi.
 
-## Tính năng chính
-- **Quản lý Stamina**: Theo dõi mức stamina hiện tại của nhân vật.
-- **Tiêu thụ Stamina**: Giảm stamina dựa trên các hành động của nhân vật.
-- **Hồi phục Stamina**: Tự động hồi phục stamina theo thời gian khi không sử dụng.
-- **Cạn kiệt Stamina**: Xử lý các hiệu ứng khi stamina bị cạn kiệt hoàn toàn.
+## 2. Quá Trình Test
+### 2.1. Test Trên Các Thiết Bị Khác Nhau
+- **PC**: Kiểm tra trên các cấu hình phần cứng khác nhau để đảm bảo game chạy tốt trên cả máy tính cấu hình thấp và cao.
+- **Console**: Test trên các hệ máy console như PlayStation, Xbox để đảm bảo tính tương thích và hiệu suất.
+- **Mobile**: Kiểm tra trên các thiết bị di động với các phiên bản hệ điều hành khác nhau (iOS, Android).
 
-## Chi tiết triển khai
-### Thuộc tính
-- **MaxStamina**: Giá trị stamina tối đa mà nhân vật có thể có.
-- **CurrentStamina**: Giá trị stamina hiện tại của nhân vật.
-- **StaminaDrainRate**: Tốc độ tiêu thụ stamina trong các hành động.
-- **StaminaRegenRate**: Tốc độ hồi phục stamina khi không sử dụng.
+### 2.2. Test Tính Năng
+- **Gameplay**: Đảm bảo tất cả các tính năng gameplay hoạt động như mong đợi.
+- **Đồ Họa**: Kiểm tra chất lượng đồ họa và hiệu suất render.
+- **Âm Thanh**: Đảm bảo âm thanh không bị giật, lag.
 
-### Hàm
-- **ConsumeStamina(float Amount)**: Giảm stamina hiện tại theo giá trị được chỉ định.
-- **RegenerateStamina(float DeltaTime)**: Tăng stamina hiện tại dựa trên tốc độ hồi phục và thời gian delta.
-- **IsStaminaDepleted()**: Kiểm tra xem stamina hiện tại có bằng không hay không.
+### 2.3. Test Hiệu Suất
+- **FPS (Frames Per Second)**: Đảm bảo game đạt được FPS ổn định.
+- **Load Time**: Kiểm tra thời gian tải game và các màn chơi.
+- **Memory Usage**: Đảm bảo game không sử dụng quá nhiều bộ nhớ, tránh tình trạng crash.
 
-### Ví dụ sử dụng
-```cpp
-void UStaminaComponent::ConsumeStamina(float Amount)
-{
-    CurrentStamina = FMath::Clamp(CurrentStamina - Amount, 0.0f, MaxStamina);
-}
+## 3. Tăng Cường Hiệu Suất
+### 3.1. Tối Ưu Hóa Đồ Họa
+- **Level of Detail (LOD)**: Sử dụng LOD để giảm tải render cho các đối tượng ở xa.
+- **Texture Compression**: Nén texture để giảm dung lượng và tăng tốc độ tải.
 
-void UStaminaComponent::RegenerateStamina(float DeltaTime)
-{
-    if (CurrentStamina < MaxStamina)
-    {
-        CurrentStamina += StaminaRegenRate * DeltaTime;
-        CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f, MaxStamina);
-    }
-}
+### 3.2. Tối Ưu Hóa Code
+- **Profiling**: Sử dụng các công cụ profiling để xác định các đoạn code gây chậm và tối ưu hóa chúng.
+- **Multithreading**: Sử dụng đa luồng để phân chia công việc và tăng hiệu suất.
 
-bool UStaminaComponent::IsStaminaDepleted() const
-{
-    return CurrentStamina <= 0.0f;
-}
-```
+### 3.3. Tối Ưu Hóa Tài Nguyên
+- **Asset Management**: Quản lý và tối ưu hóa các tài nguyên như mô hình 3D, âm thanh, texture.
+- **Streaming**: Sử dụng kỹ thuật streaming để tải tài nguyên theo nhu cầu, giảm tải bộ nhớ.
 
-## Tích hợp
-Để tích hợp thành phần Stamina vào nhân vật:
-1. Thêm thành phần vào lớp nhân vật.
-2. Liên kết tiêu thụ stamina với các hành động của nhân vật (ví dụ: chạy nhanh).
-3. Cập nhật hồi phục stamina trong hàm tick của nhân vật.
-
-```cpp
-// Trong lớp nhân vật
-UStaminaComponent* StaminaComponent;
-
-// Trong hàm tick của nhân vật
-StaminaComponent->RegenerateStamina(DeltaTime);
-```
-
-## Kết luận
-Thành phần Stamina là một phần quan trọng trong việc quản lý nhân vật trong Unreal Engine, cung cấp một hệ thống mạnh mẽ để xử lý các cơ chế liên quan đến stamina trong các trò chơi.
+## 4. Kết Luận
+Việc test và tối ưu hóa hiệu suất trên các nền tảng khác nhau là một quá trình liên tục và đòi hỏi sự chú ý đến từng chi tiết nhỏ. Bằng cách thực hiện các bước trên, chúng ta có thể đảm bảo game của mình hoạt động mượt mà và mang lại trải nghiệm tốt nhất cho người chơi.
